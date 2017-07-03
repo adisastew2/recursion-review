@@ -16,12 +16,16 @@ var stringifyJSON = function(obj) {
     var strArr = obj.map((item)=>{
       return stringifyJSON(item);
     });
-    return '[' + strArr + ']';
+    return '[' + strArr.join(',') + ']';
   }
   //Objects 
-  var newArr = _.map(obj,(item, key)=>{
-      return stringifyJSON(key) + ':' + stringifyJSON(item);
-    });
-    return '{' + newArr + '}';
+  
+  var newArr = [];
+  for (var key in obj) {
+    if (obj[key] !== undefined && typeof obj[key] !== 'function') {
+      newArr.push(stringifyJSON(key) + ':' + stringifyJSON(obj[key]));
+    }
+  }
+  return '{' + newArr.join(',') + '}';
   
 };
